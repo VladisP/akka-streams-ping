@@ -10,6 +10,7 @@ import akka.http.javadsl.model.HttpResponse;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
+import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
 public class Launcher {
@@ -18,7 +19,7 @@ public class Launcher {
     private static final String HOST_NAME = "localhost";
     private static final int PORT = 8080;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
@@ -31,5 +32,8 @@ public class Launcher {
         System.out.println("Server online at " + HOST_NAME + ":" + PORT);
         System.out.println("Press RETURN to stop...");
         System.in.read();
+        binding
+                .thenCompose(ServerBinding::unbind)
+                .thenAccept(unbound -> system.terminate());
     }
 }
