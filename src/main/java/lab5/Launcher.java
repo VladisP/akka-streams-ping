@@ -20,6 +20,7 @@ import lab5.messages.PingResult;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -35,7 +36,7 @@ public class Launcher {
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
-        Source.from()
+        Source.from(Collections.singletonList())
     }
 
     public static void main(String[] args) throws IOException {
