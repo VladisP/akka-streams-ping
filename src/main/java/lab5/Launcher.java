@@ -33,7 +33,7 @@ public class Launcher {
     private static final int PARALLELISM = 6;
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
-    private static CompletionStage<PingResult> pingFlow() {
+    private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         
     }
 
