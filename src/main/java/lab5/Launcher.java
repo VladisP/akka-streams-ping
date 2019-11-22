@@ -1,6 +1,7 @@
 package lab5;
 
 import akka.NotUsed;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
@@ -30,6 +31,9 @@ public class Launcher {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
+
+        ActorRef cacheActor = 
+
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
             //распарсить
             Query requestQuery = request.getUri().query();
@@ -41,7 +45,7 @@ public class Launcher {
             }
 
             return new PingRequest(testUrl, count);
-        }).mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask())
+        }).mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask())//TODO: create cache
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
