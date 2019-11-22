@@ -44,7 +44,7 @@ public class Launcher {
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-
+        Flow.<>
     }
 
     public static void main(String[] args) throws IOException {
