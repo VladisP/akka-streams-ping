@@ -51,7 +51,9 @@ public class Launcher {
             return new PingRequest(testUrl, count);
         })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
-                .thenCompose());
+                .thenCompose((result) -> {
+                    
+                }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
