@@ -44,7 +44,8 @@ public class Launcher {
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-        Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()));
+        Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
+        .mapAsync();
     }
 
     public static void main(String[] args) throws IOException {
