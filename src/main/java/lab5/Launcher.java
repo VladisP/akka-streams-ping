@@ -39,7 +39,7 @@ public class Launcher {
             }
 
             return new PingConfig(testUrl, count);
-        }).
+        }).mapAsync()
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
