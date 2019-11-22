@@ -3,6 +3,7 @@ package lab5.actors;
 import akka.actor.AbstractActor;
 import akka.japi.pf.ReceiveBuilder;
 import lab5.messages.PingRequest;
+import lab5.messages.PingResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class CacheActor extends AbstractActor {
         return ReceiveBuilder.create()
                 .match(PingRequest.class, (pingRequest) -> {
                     Long result = cache.getOrDefault(pingRequest.getTestUrl(), -1L);
-                    sender().tell();//TODO: настало время для PingResult
+                    sender().tell(new PingResult(pingRequest.getTestUrl(), result));//TODO: настало время для PingResult
                 })
                 .match()
                 .build();
