@@ -23,7 +23,7 @@ public class Launcher {
 
     private static final String URL_PARAM_NAME = "testUrl";
     private static final String COUNT_PARAM_NAME = "count";
-    private static final int 
+    private static final int PARALLELISM = 6;
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
