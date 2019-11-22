@@ -17,6 +17,7 @@ import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.CompletionStage;
 
 public class Launcher {
@@ -28,7 +29,7 @@ public class Launcher {
     private static final String URL_PARAM_NAME = "testUrl";
     private static final String COUNT_PARAM_NAME = "count";
     private static final int PARALLELISM = 6;
-    private static final long TIMEOUT_MILLIS = 3000;
+    private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
