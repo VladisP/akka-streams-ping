@@ -13,6 +13,7 @@ import akka.http.javadsl.model.Query;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Source;
 import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
@@ -37,7 +38,7 @@ public class Launcher {
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
-                .toMat(addsinkpls, )
+                .toMat(addsinkpls, Keep.right())
     }
 
     public static void main(String[] args) throws IOException {
