@@ -28,6 +28,7 @@ public class Launcher {
     private static final String URL_PARAM_NAME = "testUrl";
     private static final String COUNT_PARAM_NAME = "count";
     private static final int PARALLELISM = 6;
+    private static final long TIMEOUT_MILLIS = 3000;
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
@@ -47,7 +48,7 @@ public class Launcher {
             }
 
             return new PingRequest(testUrl, count);
-        }).mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, ))
+        }).mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS))
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
