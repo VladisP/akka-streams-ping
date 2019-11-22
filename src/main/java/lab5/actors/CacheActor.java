@@ -1,4 +1,4 @@
 package lab5.actors;
 
-public class CacheActor {
+public class CacheActor  {
 }
