@@ -40,7 +40,9 @@ public class Launcher {
             }
 
             return new PingConfig(testUrl, count);
-        }).mapAsync()
+        }).mapAsync(PARALLELISM, (pingConfig) -> {
+            
+        })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
