@@ -44,7 +44,7 @@ public class Launcher {
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-        Flow.<PingRequest>create().mapConcat((pingReques) -> {
+        Flow.<PingRequest>create().mapConcat((pingRequest) -> {
             
         })
     }
