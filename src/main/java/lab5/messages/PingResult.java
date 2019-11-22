@@ -3,5 +3,5 @@ package lab5.messages;
 public class PingResult {
 
     private String testUrl;
-    private Long
+    private Long 
 }
