@@ -19,7 +19,7 @@ public class Launcher {
     private static final String HOST_NAME = "localhost";
     private static final int PORT = 8080;
 
-    private static final String 
+    private static final String URL_PARAM_NAME = "testUrl";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
