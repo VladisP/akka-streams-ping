@@ -10,6 +10,7 @@ import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.model.Query;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import lab5.entities.PingConfig;
 
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
@@ -37,8 +38,8 @@ public class Launcher {
                 //TODO: error msg
             }
 
-            return 
-        })
+            return new PingConfig(testUrl, count);
+        }).
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
