@@ -13,6 +13,7 @@ import akka.http.javadsl.model.Query;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class Launcher {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
 
-        ActorRef cacheActor = system.actorOf(Props.create())
+        ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class))
 
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
             //распарсить
