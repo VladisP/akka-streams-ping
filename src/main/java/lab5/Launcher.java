@@ -36,7 +36,7 @@ public class Launcher {
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
-        Source.from(Collections.singletonList())
+        Source.from(Collections.singletonList(request))
     }
 
     public static void main(String[] args) throws IOException {
