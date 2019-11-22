@@ -13,6 +13,7 @@ import akka.http.javadsl.model.Query;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Source;
 import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 import lab5.messages.PingResult;
@@ -34,7 +35,7 @@ public class Launcher {
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
-        
+        Source.from()
     }
 
     public static void main(String[] args) throws IOException {
