@@ -20,6 +20,7 @@ public class Launcher {
     private static final int PORT = 8080;
 
     private static final String URL_PARAM_NAME = "testUrl";
+    private static final String COUNT_PARAM_NAME = "count";
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
