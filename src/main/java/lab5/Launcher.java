@@ -39,7 +39,10 @@ public class Launcher {
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
                 .toMat(addsinkpls, Keep.right())
+                .run(materializer);
     }
+
+    
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
