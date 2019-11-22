@@ -57,7 +57,7 @@ public class Launcher {
                     PingResult cachePingResult = (PingResult) result;
                     return cachePingResult.getAverageResponseTime() == -1
                             ? //TODO жоско
-                            :CompletableFuture.completedFuture()
+                            :CompletableFuture.completedFuture(cachePingResult);
                 }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
