@@ -14,6 +14,7 @@ import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
+import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
@@ -42,7 +43,7 @@ public class Launcher {
                 .run(materializer);
     }
 
-    private static Sink<PingRequest, >
+    private static Sink<PingRequest, CompletionStage<Long>> 
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
