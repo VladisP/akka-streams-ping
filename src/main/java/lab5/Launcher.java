@@ -41,7 +41,7 @@ public class Launcher {
 
             return new PingRequest(testUrl, count);
         }).mapAsync(PARALLELISM, (pingRequest) -> {
-            //TODO: тут вылетает кеширующий актор
+            
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
