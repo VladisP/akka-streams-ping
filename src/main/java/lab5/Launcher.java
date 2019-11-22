@@ -53,7 +53,8 @@ public class Launcher {
         })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
                 .thenCompose((result) -> {
-                    PingResult cachePingResult
+                    PingResult cachePingResult = (PingResult) result;
+                    
                 }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
