@@ -43,7 +43,9 @@ public class Launcher {
                 .run(materializer);
     }
 
-    private static Sink<PingRequest, CompletionStage<Long>> pingSink
+    private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
+        
+    }
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
