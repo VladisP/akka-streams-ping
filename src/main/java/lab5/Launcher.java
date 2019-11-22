@@ -19,6 +19,7 @@ import lab5.messages.PingResult;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 public class Launcher {
@@ -56,7 +57,7 @@ public class Launcher {
                     PingResult cachePingResult = (PingResult) result;
                     return cachePingResult.getAverageResponseTime() == -1
                             ? //TODO жоско
-                            : 
+                            :CompletableFuture.completedFuture()
                 }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
