@@ -37,7 +37,7 @@ public class Launcher {
                 //TODO: error msg
             }
 
-
+            return 
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
