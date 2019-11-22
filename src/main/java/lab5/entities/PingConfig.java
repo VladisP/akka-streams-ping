@@ -2,5 +2,5 @@ package lab5.entities;
 
 public class PingConfig {
 
-    private 
+    private String testUrl;
 }
