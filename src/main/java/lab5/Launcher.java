@@ -37,6 +37,7 @@ public class Launcher {
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
+                .toMat(addsinkpls, )
     }
 
     public static void main(String[] args) throws IOException {
