@@ -15,6 +15,7 @@ import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
+import lab5.messages.PingResult;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -52,7 +53,7 @@ public class Launcher {
         })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
                 .thenCompose((result) -> {
-                    
+                    PingResult cachePingResult
                 }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
