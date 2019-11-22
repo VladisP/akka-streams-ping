@@ -42,7 +42,7 @@ public class Launcher {
                 .run(materializer);
     }
 
-    private static CompletionStage<>
+    private static Sink<>
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
