@@ -28,7 +28,8 @@ public class Launcher {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
             //распарсить
-            String testUrl = request.getUri().query().getOrElse()
+            String testUrl = request.getUri().query().getOrElse(URL_PARAM_NAME, "");
+            int 
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
