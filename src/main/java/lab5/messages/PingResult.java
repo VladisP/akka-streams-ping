@@ -2,5 +2,6 @@ package lab5.messages;
 
 public class PingResult {
 
-    private String testUrl
+    private String testUrl;
+    private Long
 }
