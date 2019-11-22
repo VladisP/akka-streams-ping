@@ -33,7 +33,7 @@ public class Launcher {
     private static final int PARALLELISM = 6;
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
-    private static CompletionStage<PingResult> 
+    private static CompletionStage<PingResult> pingFlow
 
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
