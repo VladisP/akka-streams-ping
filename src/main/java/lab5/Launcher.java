@@ -7,6 +7,7 @@ import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.Query;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
@@ -28,8 +29,15 @@ public class Launcher {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
             //распарсить
-            String testUrl = request.getUri().query().getOrElse(URL_PARAM_NAME, "");
-            int 
+            Query requestQuery = request.getUri().query();
+            String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
+            int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
+
+            if (testUrl.equals("") || count == -1) {
+                //TODO: error msg
+            }
+
+            
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
