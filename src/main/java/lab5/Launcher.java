@@ -45,7 +45,7 @@ public class Launcher {
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
         Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
-        .mapAsync();
+        .mapAsync(); //TODO: время для http))
     }
 
     public static void main(String[] args) throws IOException {
