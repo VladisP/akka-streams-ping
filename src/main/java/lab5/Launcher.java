@@ -55,7 +55,8 @@ public class Launcher {
                 .thenCompose((result) -> {
                     PingResult cachePingResult = (PingResult) result;
                     return cachePingResult.getAverageResponseTime() == -1
-                            ? 
+                            ? //TODO жоско
+                            : 
                 }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
