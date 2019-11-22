@@ -10,7 +10,7 @@ import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.model.Query;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
-import lab5.entities.PingConfig;
+import lab5.messages.PingRequest;
 
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
@@ -39,8 +39,8 @@ public class Launcher {
                 //TODO: error msg
             }
 
-            return new PingConfig(testUrl, count);
-        }).mapAsync(PARALLELISM, (pingConfig) -> {
+            return new PingRequest(testUrl, count);
+        }).mapAsync(PARALLELISM, (pingRequest) -> {
             //TODO: тут вылетает кеширующий актор
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(

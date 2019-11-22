@@ -1,11 +1,11 @@
-package lab5.entities;
+package lab5.messages;
 
-public class PingConfig {
+public class PingRequest {
 
     private String testUrl;
     private int count;
 
-    public PingConfig(String testUrl, int count) {
+    public PingRequest(String testUrl, int count) {
         this.testUrl = testUrl;
         this.count = count;
     }
