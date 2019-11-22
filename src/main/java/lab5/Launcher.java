@@ -24,7 +24,7 @@ public class Launcher {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
-            
+            //распарсить
         })
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
