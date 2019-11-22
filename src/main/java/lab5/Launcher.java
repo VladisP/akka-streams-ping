@@ -44,7 +44,7 @@ public class Launcher {
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-        Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), ))
+        Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()));
     }
 
     public static void main(String[] args) throws IOException {
@@ -67,12 +67,12 @@ public class Launcher {
             return new PingRequest(testUrl, count);
         })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
-                .thenCompose((result) -> {
-                    PingResult cachePingResult = (PingResult) result;
-                    return cachePingResult.getAverageResponseTime() == -1
-                            ? //TODO жоско
+                        .thenCompose((result) -> {
+                            PingResult cachePingResult = (PingResult) result;
+                            return cachePingResult.getAverageResponseTime() == -1
+                                    ? //TODO жоско
                             :CompletableFuture.completedFuture(cachePingResult);
-                }));
+                        }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
