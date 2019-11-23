@@ -49,10 +49,14 @@ public class Launcher {
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
         Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
-        .mapAsync(PARALLELISM, (url) -> {
-            long startTime = System.nanoTime();
-            httpClient.prepareGet(url).execute().toCompletableFuture().
-        }); //TODO: время для http))
+                .mapAsync(PARALLELISM, (url) -> {
+                    long startTime = System.nanoTime();
+                    httpClient
+                            .prepareGet(url)
+                            .execute()
+                            .toCompletableFuture()
+                            .thenCompose();
+                }); //TODO: время для http))
     }
 
     public static void main(String[] args) throws IOException {
