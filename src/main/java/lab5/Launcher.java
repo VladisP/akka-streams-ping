@@ -76,25 +76,29 @@ public class Launcher {
 
         ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class)); //mb add name later
 
-        final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow.of(HttpRequest.class).map((request) -> {
-            //распарсить
-            Query requestQuery = request.getUri().query();
-            String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
-            int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
+        final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow
+                .of(HttpRequest.class).map((request) -> {
+                    //распарсить
+                    Query requestQuery = request.getUri().query();
+                    String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
+                    int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
 
-            if (testUrl.equals("") || count == -1) {
-                //TODO: error msg
-            }
+                    if (testUrl.equals("") || count == -1) {
+                        //TODO: error msg
+                    }
 
-            return new PingRequest(testUrl, count);
-        })
+                    return new PingRequest(testUrl, count);
+                })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
                         .thenCompose((result) -> {
                             PingResult cachePingResult = (PingResult) result;
                             return cachePingResult.getAverageResponseTime() == -1
                                     ? pingExecute(pingRequest, materializer)
                                     : CompletableFuture.completedFuture(cachePingResult);
-                        }));
+                        }))
+                .map((result) -> {
+                    
+                });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
