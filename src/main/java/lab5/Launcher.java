@@ -97,7 +97,7 @@ public class Launcher {
                                     : CompletableFuture.completedFuture(cachePingResult);
                         }))
                 .map((result) -> {
-                    
+                    cacheActor.tell();
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
