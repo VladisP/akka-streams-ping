@@ -37,8 +37,6 @@ public class Launcher {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
 
-        ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class)); //mb add name later
-
         final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow
                 .of(HttpRequest.class).map((request) -> {
                     //распарсить

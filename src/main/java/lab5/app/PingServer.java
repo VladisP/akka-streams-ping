@@ -1,10 +1,13 @@
 package lab5.app;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
+import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 import lab5.messages.PingResult;
 import org.asynchttpclient.AsyncHttpClient;
@@ -24,9 +27,9 @@ public class PingServer {
     private static final long NANO_TO_MS_FACTOR = 1_000_000L;
 
     private AsyncHttpClient httpClient = Dsl.asyncHttpClient();
+    ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class)); //mb add name later
 
-
-    private static CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
+    private CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
         return Source
                 .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
@@ -39,7 +42,7 @@ public class PingServer {
                 ));
     }
 
-    private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
+    private Sink<PingRequest, CompletionStage<Long>> pingSink() {
         return Flow.<PingRequest>create()
                 .mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
                 .mapAsync(PARALLELISM, (url) -> {
