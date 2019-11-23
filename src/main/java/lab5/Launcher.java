@@ -96,7 +96,7 @@ public class Launcher {
                         }))
                 .map((result) -> {
                     cacheActor.tell(result, ActorRef.noSender());
-                    return HttpResponse.create().withStatus(StatusCodes.ok)
+                    return HttpResponse.create().withStatus(StatusCode)
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
