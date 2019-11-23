@@ -20,6 +20,7 @@ import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 import lab5.messages.PingResult;
 import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.Dsl;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -38,7 +39,7 @@ public class Launcher {
     private static final int PARALLELISM = 6;
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
 
-    private static AsyncHttpClient httpClient = 
+    private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
@@ -50,7 +51,7 @@ public class Launcher {
         Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
         .mapAsync(PARALLELISM, (url) -> {
             long startTime = System.nanoTime();
-            //client
+            httpClient.prepareGet()
         }); //TODO: время для http))
     }
 
