@@ -48,7 +48,8 @@ public class Launcher {
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-        Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
+        return Flow.<PingRequest>create()
+                .mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
                 .mapAsync(PARALLELISM, (url) -> {
                     long startTime = System.nanoTime();
                     return httpClient
@@ -56,7 +57,8 @@ public class Launcher {
                             .execute()
                             .toCompletableFuture()
                             .thenCompose((response) -> CompletableFuture.completedFuture(System.nanoTime() - startTime));
-                }).toMat(Sink.fold(0L, Long::sum))
+                })
+                .toMat(Sink.fold(0L, Long::sum), Keep.right());
     }
 
     public static void main(String[] args) throws IOException {
