@@ -37,10 +37,9 @@ public class PingServer {
         cacheActor = system.actorOf(Props.create(CacheActor.class));
     }
 
-    Flow<HttpRequest, HttpResponse, NotUsed> getHttpFlow() {
+    Flow<HttpRequest, HttpResponse, NotUsed> getHttpFlow(ActorMaterializer materializer) {
         return Flow
                 .of(HttpRequest.class).map((request) -> {
-                    //распарсить
                     Query requestQuery = request.getUri().query();
                     String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
                     int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
