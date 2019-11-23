@@ -37,38 +37,8 @@ public class Launcher {
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
 
-        final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow
-                .of(HttpRequest.class).map((request) -> {
-                    //распарсить
-                    Query requestQuery = request.getUri().query();
-                    String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
-                    int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
+        //instance
 
-                    if (testUrl.equals("") || count == -1) {
-                        //TODO: error msg
-                    }
-
-                    return new PingRequest(testUrl, count);
-                })
-                .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
-                        .thenCompose((result) -> {
-                            PingResult cachePingResult = (PingResult) result;
-                            return cachePingResult.getAverageResponseTime() == -1
-                                    ? pingExecute(pingRequest, materializer)
-                                    : CompletableFuture.completedFuture(cachePingResult);
-                        }))
-                .map((result) -> {
-                    cacheActor.tell(result, ActorRef.noSender());
-
-                    return HttpResponse
-                            .create()
-                            .withStatus(StatusCodes.OK)
-                            .withEntity(
-                                    HttpEntities.create(
-                                            result.getTestUrl() + " " + result.getAverageResponseTime()
-                                    )
-                            );
-                });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
                 ConnectHttp.toHost(HOST_NAME, PORT),
