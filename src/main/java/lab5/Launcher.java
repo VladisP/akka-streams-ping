@@ -19,6 +19,7 @@ import akka.stream.javadsl.Source;
 import lab5.actors.CacheActor;
 import lab5.messages.PingRequest;
 import lab5.messages.PingResult;
+import org.asynchttpclient.AsyncHttpClient;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -36,6 +37,8 @@ public class Launcher {
     private static final String COUNT_PARAM_NAME = "count";
     private static final int PARALLELISM = 6;
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
+
+    private static AsyncHttpClient httpClient = 
 
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
