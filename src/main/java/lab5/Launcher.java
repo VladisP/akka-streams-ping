@@ -42,7 +42,7 @@ public class Launcher {
 
     private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
 
-    private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
+    private static CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
         return Source
                 .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
@@ -92,7 +92,7 @@ public class Launcher {
                         .thenCompose((result) -> {
                             PingResult cachePingResult = (PingResult) result;
                             return cachePingResult.getAverageResponseTime() == -1
-                                    ?
+                                    ? pingExecute()
                             :CompletableFuture.completedFuture(cachePingResult);
                         }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
