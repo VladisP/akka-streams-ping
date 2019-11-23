@@ -74,12 +74,10 @@ class PingServer {
                 .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
                 .run(materializer)
-                .thenCompose((sumTime) -> CompletableFuture.completedFuture(
-                        new PingResult(
-                                request.getTestUrl(),
-                                sumTime / request.getCount() / NANO_TO_MS_FACTOR
-                        )
-                ));
+                .thenApply((sumTime) -> new PingResult(
+                        request.getTestUrl(),
+                        sumTime / request.getCount() / NANO_TO_MS_FACTOR)
+                );
     }
 
     private Sink<PingRequest, CompletionStage<Long>> pingSink() {
@@ -92,7 +90,7 @@ class PingServer {
                             .prepareGet(url)
                             .execute()
                             .toCompletableFuture()
-                            .thenCompose((response) -> CompletableFuture.completedFuture(System.nanoTime() - startTime));
+                            .thenApply((response) -> System.nanoTime() - startTime);
                 })
                 .toMat(Sink.fold(0L, Long::sum), Keep.right());
     }
