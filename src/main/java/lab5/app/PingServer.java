@@ -37,38 +37,40 @@ public class PingServer {
         cacheActor = system.actorOf(Props.create(CacheActor.class));
     }
 
-    final Flow<HttpRequest, HttpResponse, NotUsed> httpFlow = Flow
-            .of(HttpRequest.class).map((request) -> {
-                //распарсить
-                Query requestQuery = request.getUri().query();
-                String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
-                int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
+    Flow<HttpRequest, HttpResponse, NotUsed> getHttpFlow() {
+        return Flow
+                .of(HttpRequest.class).map((request) -> {
+                    //распарсить
+                    Query requestQuery = request.getUri().query();
+                    String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
+                    int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
 
-                if (testUrl.equals("") || count == -1) {
-                    //TODO: error msg
-                }
+                    if (testUrl.equals("") || count == -1) {
+                        //TODO: error msg
+                    }
 
-                return new PingRequest(testUrl, count);
-            })
-            .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
-                    .thenCompose((result) -> {
-                        PingResult cachePingResult = (PingResult) result;
-                        return cachePingResult.getAverageResponseTime() == -1
-                                ? pingExecute(pingRequest, materializer)
-                                : CompletableFuture.completedFuture(cachePingResult);
-                    }))
-            .map((result) -> {
-                cacheActor.tell(result, ActorRef.noSender());
+                    return new PingRequest(testUrl, count);
+                })
+                .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
+                        .thenCompose((result) -> {
+                            PingResult cachePingResult = (PingResult) result;
+                            return cachePingResult.getAverageResponseTime() == -1
+                                    ? pingExecute(pingRequest, materializer)
+                                    : CompletableFuture.completedFuture(cachePingResult);
+                        }))
+                .map((result) -> {
+                    cacheActor.tell(result, ActorRef.noSender());
 
-                return HttpResponse
-                        .create()
-                        .withStatus(StatusCodes.OK)
-                        .withEntity(
-                                HttpEntities.create(
-                                        result.getTestUrl() + " " + result.getAverageResponseTime()
-                                )
-                        );
-            });
+                    return HttpResponse
+                            .create()
+                            .withStatus(StatusCodes.OK)
+                            .withEntity(
+                                    HttpEntities.create(
+                                            result.getTestUrl() + " " + result.getAverageResponseTime()
+                                    )
+                            );
+                });
+    }
 
     private CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
         return Source
