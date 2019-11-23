@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-public class PingServer {
+class PingServer {
 
     private static final String URL_PARAM_NAME = "testUrl";
     private static final String COUNT_PARAM_NAME = "count";
@@ -39,7 +39,8 @@ public class PingServer {
 
     Flow<HttpRequest, HttpResponse, NotUsed> getHttpFlow(ActorMaterializer materializer) {
         return Flow
-                .of(HttpRequest.class).map((request) -> {
+                .of(HttpRequest.class)
+                .map((request) -> {
                     Query requestQuery = request.getUri().query();
                     String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
                     int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
@@ -49,6 +50,7 @@ public class PingServer {
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
                         .thenCompose((result) -> {
                             PingResult cachePingResult = (PingResult) result;
+
                             return cachePingResult.getAverageResponseTime() == -1
                                     ? pingExecute(pingRequest, materializer)
                                     : CompletableFuture.completedFuture(cachePingResult);
@@ -85,6 +87,7 @@ public class PingServer {
                 .mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
                 .mapAsync(PARALLELISM, (url) -> {
                     long startTime = System.nanoTime();
+
                     return httpClient
                             .prepareGet(url)
                             .execute()
