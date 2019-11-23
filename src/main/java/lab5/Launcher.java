@@ -51,7 +51,7 @@ public class Launcher {
         Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
         .mapAsync(PARALLELISM, (url) -> {
             long startTime = System.nanoTime();
-            httpClient.prepareGet(url).execute()
+            httpClient.prepareGet(url).execute().toCompletableFuture().
         }); //TODO: время для http))
     }
 
