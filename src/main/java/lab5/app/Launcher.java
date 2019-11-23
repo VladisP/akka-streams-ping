@@ -32,35 +32,6 @@ public class Launcher {
     private static final String HOST_NAME = "localhost";
     private static final int PORT = 8080;
 
-    private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
-
-    private static CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
-        return Source
-                .from(Collections.singletonList(request))
-                .toMat(pingSink(), Keep.right())
-                .run(materializer)
-                .thenCompose((sumTime) -> CompletableFuture.completedFuture(
-                        new PingResult(
-                                request.getTestUrl(),
-                                sumTime / request.getCount() / NANO_TO_MS_FACTOR
-                        )
-                ));
-    }
-
-    private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
-        return Flow.<PingRequest>create()
-                .mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
-                .mapAsync(PARALLELISM, (url) -> {
-                    long startTime = System.nanoTime();
-                    return httpClient
-                            .prepareGet(url)
-                            .execute()
-                            .toCompletableFuture()
-                            .thenCompose((response) -> CompletableFuture.completedFuture(System.nanoTime() - startTime));
-                })
-                .toMat(Sink.fold(0L, Long::sum), Keep.right());
-    }
-
     public static void main(String[] args) throws IOException {
         ActorSystem system = ActorSystem.create(ACTOR_SYSTEM_NAME);
         final Http http = Http.get(system);
