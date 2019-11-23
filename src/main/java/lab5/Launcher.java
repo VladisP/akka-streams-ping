@@ -96,10 +96,15 @@ public class Launcher {
                         }))
                 .map((result) -> {
                     cacheActor.tell(result, ActorRef.noSender());
+
                     return HttpResponse
                             .create()
                             .withStatus(StatusCodes.OK)
-                            .withEntity(HttpEntities.)
+                            .withEntity(
+                                    HttpEntities.create(
+                                            result.getTestUrl() + " " + result.getAverageResponseTime()
+                                    )
+                            );
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
