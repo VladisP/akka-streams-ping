@@ -99,7 +99,7 @@ public class Launcher {
                     return HttpResponse
                             .create()
                             .withStatus(StatusCodes.OK)
-                            .withEntity()
+                            .withEntity(HttpEntities.)
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
