@@ -98,7 +98,7 @@ public class Launcher {
                         }))
                 .map((result) -> {
                     cacheActor.tell(result, ActorRef.noSender());
-                    return 
+                    return HttpResponse.create().withEntity()
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 httpFlow,
