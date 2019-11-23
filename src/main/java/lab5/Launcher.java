@@ -42,9 +42,8 @@ public class Launcher {
 
     private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
 
-    //TODO: мб избавиться от PingResult???
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
-        Source
+        return Source
                 .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
                 .run(materializer)
@@ -52,7 +51,7 @@ public class Launcher {
                         new PingResult(
                                 request.getTestUrl(),
                                 sumTime / request.getCount() / NANO_TO_MS_FACTOR
-                        );
+                        )
                 ));
     }
 
@@ -93,7 +92,7 @@ public class Launcher {
                         .thenCompose((result) -> {
                             PingResult cachePingResult = (PingResult) result;
                             return cachePingResult.getAverageResponseTime() == -1
-                                    ? //TODO жоско
+                                    ? 
                             :CompletableFuture.completedFuture(cachePingResult);
                         }));
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
