@@ -43,7 +43,8 @@ public class Launcher {
 
     //TODO: мб избавиться от PingResult???
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
-        Source.from(Collections.singletonList(request))
+        Source
+                .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
                 .run(materializer);
     }
