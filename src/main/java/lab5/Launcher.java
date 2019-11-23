@@ -38,7 +38,7 @@ public class Launcher {
     private static final String COUNT_PARAM_NAME = "count";
     private static final int PARALLELISM = 6;
     private static final Duration TIMEOUT_MILLIS = Duration.ofMillis(3000);
-    private static final long
+    private static final long NANO_TO_MS_FACTOR = 1_000_000L;
 
     private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
 
@@ -49,7 +49,10 @@ public class Launcher {
                 .toMat(pingSink(), Keep.right())
                 .run(materializer)
                 .thenCompose((sumTime) -> CompletableFuture.completedFuture(
-                        new PingResult(request.getTestUrl(), sumTime / request.getCount())
+                        new PingResult(
+                                request.getTestUrl(),
+                                sumTime / request.getCount() / NANO_TO_MS_FACTOR
+                        );
                 ));
     }
 
