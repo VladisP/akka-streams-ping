@@ -48,7 +48,7 @@ public class Launcher {
                 .toMat(pingSink(), Keep.right())
                 .run(materializer)
                 .thenCompose((sumTime) -> CompletableFuture.completedFuture(
-                        new PingResult()
+                        new PingResult(request.getTestUrl(), )
                 ));
     }
 
