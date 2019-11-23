@@ -1,6 +1,7 @@
 package lab5.app;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
@@ -27,7 +28,11 @@ public class PingServer {
     private static final long NANO_TO_MS_FACTOR = 1_000_000L;
 
     private AsyncHttpClient httpClient = Dsl.asyncHttpClient();
-    private ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class));
+    private ActorRef cacheActor;
+
+    PingServer(ActorSystem system) {
+        cacheActor = system.actorOf(Props.create(CacheActor.class));
+    }
 
     private CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
         return Source
