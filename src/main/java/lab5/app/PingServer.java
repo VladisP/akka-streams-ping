@@ -45,10 +45,6 @@ public class PingServer {
                     String testUrl = requestQuery.getOrElse(URL_PARAM_NAME, "");
                     int count = Integer.parseInt(requestQuery.getOrElse(COUNT_PARAM_NAME, "-1"));
 
-                    if (testUrl.equals("") || count == -1) {
-                        //TODO: error msg
-                    }
-
                     return new PingRequest(testUrl, count);
                 })
                 .mapAsync(PARALLELISM, (pingRequest) -> Patterns.ask(cacheActor, pingRequest, TIMEOUT_MILLIS)
