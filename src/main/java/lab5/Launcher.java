@@ -47,9 +47,7 @@ public class Launcher {
                 .from(Collections.singletonList(request))
                 .toMat(pingSink(), Keep.right())
                 .run(materializer)
-                .thenCompose((sumTime) -> {
-
-                });
+                .thenCompose((sumTime) -> CompletableFuture.completedFuture());
     }
 
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
