@@ -27,7 +27,7 @@ public class PingServer {
     private static final long NANO_TO_MS_FACTOR = 1_000_000L;
 
     private AsyncHttpClient httpClient = Dsl.asyncHttpClient();
-    ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class)); //mb add name later
+    private ActorRef cacheActor = system.actorOf(Props.create(CacheActor.class));
 
     private CompletionStage<PingResult> pingExecute(PingRequest request, ActorMaterializer materializer) {
         return Source
