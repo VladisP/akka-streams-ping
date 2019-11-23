@@ -41,9 +41,10 @@ public class Launcher {
 
     private static AsyncHttpClient httpClient = Dsl.asyncHttpClient();
 
+    //TODO: мб избавиться от PingResult???
     private static CompletionStage<PingResult> pingFlow(PingRequest request, ActorMaterializer materializer) {
         Source.from(Collections.singletonList(request))
-                .toMat(addsinkpls, Keep.right())
+                .toMat(pingSink(), Keep.right())
                 .run(materializer);
     }
 
