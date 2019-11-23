@@ -56,7 +56,7 @@ public class Launcher {
                             .execute()
                             .toCompletableFuture()
                             .thenCompose((response) -> CompletableFuture.completedFuture(System.nanoTime() - startTime));
-                }).toMat()
+                }).toMat(Sink.fold())
     }
 
     public static void main(String[] args) throws IOException {
