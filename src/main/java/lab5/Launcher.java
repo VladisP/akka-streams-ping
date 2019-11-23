@@ -55,7 +55,7 @@ public class Launcher {
                             .prepareGet(url)
                             .execute()
                             .toCompletableFuture()
-                            .thenCompose((response) -> );
+                            .thenCompose((response) -> CompletableFuture);
                 }); //TODO: время для http))
     }
 
