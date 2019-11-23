@@ -46,7 +46,7 @@ public class Launcher {
     private static Sink<PingRequest, CompletionStage<Long>> pingSink() {
         Flow.<PingRequest>create().mapConcat((pingRequest) -> Collections.nCopies(pingRequest.getCount(), pingRequest.getTestUrl()))
         .mapAsync(PARALLELISM, (url) -> {
-            
+            long startTime = System.nanoTime();
         }); //TODO: время для http))
     }
 
